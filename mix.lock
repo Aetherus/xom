@@ -1,0 +1,2 @@
+%{"datastructures": {:hex, :datastructures, "0.2.6", "fe0fd2566886c79c072024acb7a062eaed56b06a87931526daefbdc12d902dee", [:mix], []},
+  "exsom": {:hex, :exsom, "0.2.1", "25f264a61ef0811b288b37a782e1c7e21e560309544afdbe85036516f5c7aaa8", [:mix], []}}
