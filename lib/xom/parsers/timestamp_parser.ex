@@ -1,16 +1,16 @@
 defmodule Xom.Parsers.TimestampParser do
 
-  defstruct buffer: ""
+  defstruct buffer: "", options: %{}
 
   defimpl Xom.Parsers.Parser, for: __MODULE__ do
-    def new, do: %__MODULE__{}
+    def new(options \\ %{}), do: %__MODULE__{options: options}
 
-    def update(%__MODULE__{buffer: buffer}, chunk) do
-      %__MODULE__{buffer: buffer <> String.trim(chunk)}
+    def update(%__MODULE__{buffer: buffer} = parser, chunk) do
+      %{parser | buffer: buffer <> String.trim(chunk)}
     end
 
-    def parse(%__MODULE__{buffer: buffer}) do
-      Timex.parse(buffer, "{ISO:Extended}")
+    def parse(%__MODULE__{buffer: buffer, options: options}) do
+      {Timex.parse(buffer, "{ISO:Extended}"), options}
     end
   end
 end

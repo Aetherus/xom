@@ -29,10 +29,11 @@ defmodule Xom.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:exsom, "~> 0.2.1"},
-      {:datastructures, "~> 0.2.6"},
+      {:exsom, "~> 0.2"},
+      {:datastructures, "~> 0.2"},
       {:html_entities, "~> 0.3"},
-      {:timex, "~> 3.1"}
+      {:timex, "~> 3.1"},
+      {:temp, "~> 0.4"}
     ]
   end
 end
