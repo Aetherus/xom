@@ -6,7 +6,7 @@ defmodule Xom.Parsers.ListParser do
 
 end
 
-defimpl Xom.Parsers.Parser, for: __MODULE__ do
+defimpl Xom.Parsers.Parser, for: Xom.Parsers.ListParser do
   alias Xom.Parsers.ListParser
 
   def update(%ListParser{buffer: buffer} = parser, {chunk, _}) do
