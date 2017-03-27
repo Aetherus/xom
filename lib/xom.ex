@@ -60,7 +60,7 @@ defmodule Xom do
 
   defp on_sax_event({:characters, text}, _location, stack) do
     [peek | stack] = stack
-    parser = Parser.update(peek, to_string(text))
+    parser = Parser.update(peek, text)
     [parser | stack]
   end
 

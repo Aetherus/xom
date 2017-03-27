@@ -16,7 +16,7 @@ defmodule Xom.Parsers.FileParser do
   end
 
   def handle_cast({:update, chunk}, %{fd: fd} = state) do
-    binary = chunk |> String.trim() |> Base.decode64!(ignore: :whitespace)
+    binary = chunk |> to_string() |> Base.decode64!(ignore: :whitespace)
     IO.binwrite(fd, binary)
     {:noreply, state}
   end
