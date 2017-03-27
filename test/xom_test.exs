@@ -2,7 +2,7 @@ defmodule XomTest do
   use ExUnit.Case, async: true
   doctest Xom
 
-  @mock_file_path "test/mock/elixir.jpg"
+  @mock_file_path "test/fixtures/elixir.jpg"
   @sample_file_node """
     <file filename="foo.jpg" content-type="image/jpeg">
       #{File.read!(@mock_file_path) |> Base.encode64}
@@ -68,7 +68,7 @@ defmodule XomTest do
   end
 
   test "parse composite" do
-    fd = File.open!("test/mock/mock.xml", [:read, :binary])
+    fd = File.open!("test/fixtures/fixture.xml", [:read, :binary])
     {:ok, result, _} = Xom.parse(fd)
     assert %{
       "foo" => "foo",

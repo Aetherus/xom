@@ -1,4 +1,5 @@
 defmodule Xom do
+  alias Xom.IOWrapper
   alias Xom.Parsers.{ParseError, Parser, BooleanParser, FileParser, FloatParser, IntegerParser, ListParser, MapParser, StringParser, TimestampParser}
 
   @chunk_size 1024  # bytes
@@ -14,7 +15,8 @@ defmodule Xom do
     'timestamp' => TimestampParser
   }
 
-  def parse(io) do
+  def parse(thing) do
+    {:ok, io} = IOWrapper.wrap(thing)
     :xmerl_sax_parser.stream("",
         continuation_state: io,
         continuation_fun: &read_io/1,

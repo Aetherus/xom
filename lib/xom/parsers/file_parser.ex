@@ -24,7 +24,7 @@ defmodule Xom.Parsers.FileParser do
   def handle_call(:parse, _from, %{fd: fd, path: path, options: options} = state) do
     File.close(fd)
     uploaded_file = %Plug.Upload{path: path, filename: options["filename"], content_type: options["content-type"]}
-    {:reply, {uploaded_file, options}, state}
+    {:stop, :normal, {uploaded_file, options}, state}
   end
 end
 
@@ -37,8 +37,6 @@ defimpl Xom.Parsers.Parser, for: Xom.Parsers.FileParser do
   end
 
   def parse(%FileParser{pid: pid}) do
-    result = GenServer.call(pid, :parse)
-    GenServer.stop(pid, :normal)
-    result
+    GenServer.call(pid, :parse)
   end
 end
