@@ -74,19 +74,20 @@ defmodule XomTest do
       "foo" => "foo",
       "bar" => "bar",
       "baz" => " baz ",
-      "file" => %Plug.Upload{},
+      "file" => %Plug.Upload{path: path1},
       "list" => [
         %{
           "latitude" => 23.45,
           "longitude" => 112.33,
-          "snapshot" => %Plug.Upload{}
+          "snapshot" => %Plug.Upload{path: path2}
         },
         %{
           "latitude" => 34.56,
           "longitude" => 223.44,
-          "snapshot" => %Plug.Upload{}
+          "snapshot" => %Plug.Upload{path: path3}
         }
       ]
     } = result
+    [path1, path2, path3] |> Enum.each(fn path -> File.rm!(path) end)
   end
 end
