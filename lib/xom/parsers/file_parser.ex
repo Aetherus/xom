@@ -3,22 +3,9 @@ defmodule Xom.Parsers.FileParser do
 
   defstruct pid: nil, options: %{}
 
-  defimpl Xom.Parsers.Parser, for: __MODULE__ do
-    def new(options \\ %{}), do
-      {:ok, pid} = GenServer.start_link(__MODULE__, options)
-      %__MODULE__{pid: pid, options: options}
-    end
-
-    def update(%__MODULE__{pid: pid} = parser, chunk) do
-      cast(pid, {:update, chunk})
-      parser
-    end
-
-    def parse(%__MODULE__{pid: pid, options: _}) do
-      result = call(pid, :parse)
-      stop(pid, :normal)
-      {result, options}
-    end
+  def new(options \\ %{}) do
+    {:ok, pid} = GenServer.start_link(__MODULE__, options)
+    %__MODULE__{pid: pid, options: options}
   end
 
   ## GenServer callbacks ##
@@ -36,6 +23,21 @@ defmodule Xom.Parsers.FileParser do
 
   def handle_call(:parse, _from, %{fd: fd, path: path, options: options}) do
     File.close(fd)
-    %Plug.Upload{path: path, filename: options["filename"], content_type: options[]}
+    %Plug.Upload{path: path, filename: options["filename"], content_type: options["content-type"]}
+  end
+end
+
+defimpl Xom.Parsers.Parser, for: Xom.Parsers.FileParser do
+  alias Xom.Parsers.FileParser
+
+  def update(%FileParser{pid: pid} = parser, chunk) do
+    GenServer.cast(pid, {:update, chunk})
+    parser
+  end
+
+  def parse(%FileParser{pid: pid, options: options}) do
+    result = GenServer.call(pid, :parse)
+    GenServer.stop(pid, :normal)
+    {result, options}
   end
 end

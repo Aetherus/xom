@@ -8,13 +8,10 @@ defmodule Xom.Parsers do
   end
 
   defprotocol Parser do
-    @spec new(options \\ %{}) :: Parser.t
-    def new(options \\ %{})
-
-    @spec update(parser, chunk) :: Parser.t
+    #@spec update(parser, chunk) :: Parser.t
     def update(parser, chunk)
-
-    @spec parse(parser) :: {any, Map.t}
+  
+    #@spec parse(parser) :: {any, Map.t}
     def parse(parser)
   end
 end
