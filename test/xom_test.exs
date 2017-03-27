@@ -34,6 +34,12 @@ defmodule XomTest do
     assert {:ok, "bar", _} = Xom.parse(io)
   end
 
+  test "parse timestamp" do
+    {:ok, io} = StringIO.open("<timestamp>2017-01-23T12:34:56+08:00</timestamp>")
+    {:ok, timestamp, _} = Xom.parse(io)
+    assert %{year: 2017, month: 1, day: 23, hour: 12, minute: 34, second: 56, time_zone: "Etc/GMT-8"} = timestamp
+  end
+
   test "parse file" do
     {:ok, io} = StringIO.open(@sample_file_node)
     assert {:ok, %Plug.Upload{path: tmp_path, content_type: "image/jpeg", filename: "foo.jpg"}, _} = Xom.parse(io)

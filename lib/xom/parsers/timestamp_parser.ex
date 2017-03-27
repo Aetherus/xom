@@ -14,6 +14,7 @@ defimpl Xom.Parsers.Parser, for: Xom.Parsers.TimestampParser do
   end
 
   def parse(%TimestampParser{buffer: buffer, options: options}) do
-    {Timex.parse(buffer, "{ISO:Extended}"), options}
+    {:ok, timestamp} = Timex.parse(buffer, "{ISO:Extended}")
+    {timestamp, options}
   end
 end
