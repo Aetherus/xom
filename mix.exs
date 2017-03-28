@@ -31,7 +31,6 @@ defmodule Xom.Mixfile do
     [
       {:html_entities, "~> 0.3"},
       {:timex, "~> 3.1"},
-      {:temp, "~> 0.4"},
       {:plug, "~> 1.3"}
     ]
   end
