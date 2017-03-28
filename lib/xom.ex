@@ -1,6 +1,5 @@
 defmodule Xom do
-  alias Xom.IOWrapper
-  alias Xom.Parsers.{ParseError, Parser, BooleanParser, FileParser, FloatParser, IntegerParser, ListParser, MapParser, StringParser, TimestampParser}
+  alias Xom.{IOWrapper, ParseError, Parser, BooleanParser, FileParser, FloatParser, IntegerParser, ListParser, MapParser, StringParser, TimestampParser}
 
   @chunk_size 1024  # bytes
 

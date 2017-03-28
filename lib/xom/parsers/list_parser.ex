@@ -1,4 +1,4 @@
-defmodule Xom.Parsers.ListParser do
+defmodule Xom.ListParser do
 
   defstruct buffer: [], options: %{}
 
@@ -6,8 +6,8 @@ defmodule Xom.Parsers.ListParser do
 
 end
 
-defimpl Xom.Parsers.Parser, for: Xom.Parsers.ListParser do
-  alias Xom.Parsers.ListParser
+defimpl Xom.Parser, for: Xom.ListParser do
+  alias Xom.ListParser
 
   def update(%ListParser{buffer: buffer} = parser, {chunk, _}) do
     %{parser | buffer: [chunk | buffer]}

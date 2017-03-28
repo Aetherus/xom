@@ -1,4 +1,4 @@
-defmodule Xom.Parsers.MapParser do
+defmodule Xom.MapParser do
 
   defstruct buffer: %{}, options: %{}
 
@@ -6,8 +6,8 @@ defmodule Xom.Parsers.MapParser do
 
 end
 
-defimpl Xom.Parsers.Parser, for: Xom.Parsers.MapParser do
-  alias Xom.Parsers.MapParser
+defimpl Xom.Parser, for: Xom.MapParser do
+  alias Xom.MapParser
 
   def update(%MapParser{buffer: buffer} = parser, {value, %{"name" => name}}) do
     %{parser | buffer: Map.put(buffer, name, value)}

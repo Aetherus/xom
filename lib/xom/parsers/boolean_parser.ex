@@ -1,4 +1,4 @@
-defmodule Xom.Parsers.BooleanParser do
+defmodule Xom.BooleanParser do
 
   defstruct buffer: [], options: %{}
 
@@ -6,8 +6,8 @@ defmodule Xom.Parsers.BooleanParser do
 
 end
 
-defimpl Xom.Parsers.Parser, for: Xom.Parsers.BooleanParser do
-  alias Xom.Parsers.BooleanParser
+defimpl Xom.Parser, for: Xom.BooleanParser do
+  alias Xom.{BooleanParser, ParseError}
 
   def update(%BooleanParser{buffer: buffer} = parser, chunk) do
     %{parser | buffer: [buffer, chunk]}
@@ -18,7 +18,7 @@ defimpl Xom.Parsers.Parser, for: Xom.Parsers.BooleanParser do
       "true" -> true
       "false" -> false
       "" -> nil
-      _ -> raise Xom.Parsers.ParseError, BooleanParser
+      _ -> raise ParseError, BooleanParser
     end
     {result, options}
   end

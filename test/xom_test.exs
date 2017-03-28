@@ -10,66 +10,69 @@ defmodule XomTest do
   """
 
   test "parse true" do
-    {:ok, io} = StringIO.open("<boolean>true</boolean>")
-    assert {:ok, true, _} = Xom.parse(io)
+    assert {:ok, true, _} = Xom.parse("<boolean>true</boolean>")
   end
 
   test "parse false" do
-    {:ok, io} = StringIO.open("<boolean>false</boolean>")
-    assert {:ok, false, _} = Xom.parse(io)
+    assert {:ok, false, _} = Xom.parse("<boolean>false</boolean>")
   end
 
   test "parse float" do
-    {:ok, io} = StringIO.open("<float>-3.14</float>")
-    assert {:ok, -3.14, _} = Xom.parse(io)
+    assert {:ok, -3.14, _} = Xom.parse("<float>-3.14</float>")
   end
 
   test "parse integer" do
-    {:ok, io} = StringIO.open("<integer>123</integer>")
-    assert {:ok, 123, _} = Xom.parse(io)
+    assert {:ok, 123, _} = Xom.parse("<integer>123</integer>")
   end
 
   test "parse string" do
-    {:ok, io} = StringIO.open("<string>bar</string>")
-    assert {:ok, "bar", _} = Xom.parse(io)
+    assert {:ok, "这是bar！", _} = Xom.parse("<string>这是bar！</string>")
   end
 
   test "parse timestamp" do
-    {:ok, io} = StringIO.open("<timestamp>2017-01-23T12:34:56+08:00</timestamp>")
-    {:ok, timestamp, _} = Xom.parse(io)
+    {:ok, timestamp, _} = Xom.parse("<timestamp>2017-01-23T12:34:56+08:00</timestamp>")
     assert %{year: 2017, month: 1, day: 23, hour: 12, minute: 34, second: 56, time_zone: "Etc/GMT-8"} = timestamp
   end
 
   test "parse file" do
-    {:ok, io} = StringIO.open(@sample_file_node)
-    assert {:ok, %Plug.Upload{path: tmp_path, content_type: "image/jpeg", filename: "foo.jpg"}, _} = Xom.parse(io)
+    assert {:ok, %Plug.Upload{path: tmp_path, content_type: "image/jpeg", filename: "foo.jpg"}, _} = Xom.parse(@sample_file_node)
     assert File.read!(@mock_file_path) == File.read!(tmp_path)
     File.rm!(tmp_path)
   end
 
   test "parse list" do
-    {:ok, io} = StringIO.open """
+    xml = """
     <list>
       <string>foo</string>
       <string>bar</string>
     </list>
     """
-    assert {:ok, ["foo", "bar"], _} = Xom.parse(io)
+    assert {:ok, ["foo", "bar"], _} = Xom.parse(xml)
   end
 
   test "parse map" do
-    {:ok, io} = StringIO.open """
+    xml = """
     <map>
       <string name="foo">FOO</string>
       <string name="bar">BAR</string>
     </map>
     """
-    assert {:ok, %{"foo" => "FOO", "bar" => "BAR"}, _} = Xom.parse(io)
+    assert {:ok, %{"foo" => "FOO", "bar" => "BAR"}, _} = Xom.parse(xml)
   end
 
-  test "parse composite" do
+  test "parse io" do
     fd = File.open!("test/fixtures/fixture.xml", [:read, :binary])
     {:ok, result, _} = Xom.parse(fd)
+    assert_parse_success(result)
+  end
+
+  test "parse conn" do
+    conn = Plug.Test.conn(:post, "/", File.read!("test/fixtures/fixture.xml"))
+    {:ok, result, _} = Xom.parse(conn)
+    assert_parse_success(result)
+  end
+
+  def assert_parse_success(result) do
     assert %{
       "foo" => "foo",
       "bar" => "bar",

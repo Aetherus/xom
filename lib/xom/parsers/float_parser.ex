@@ -1,4 +1,4 @@
-defmodule Xom.Parsers.FloatParser do
+defmodule Xom.FloatParser do
 
   defstruct buffer: [], options: %{}
 
@@ -6,8 +6,8 @@ defmodule Xom.Parsers.FloatParser do
 
 end
 
-defimpl Xom.Parsers.Parser, for: Xom.Parsers.FloatParser do
-  alias Xom.Parsers.FloatParser
+defimpl Xom.Parser, for: Xom.FloatParser do
+  alias Xom.FloatParser
 
   def update(%FloatParser{buffer: buffer} = parser, chunk) do
     %{parser | buffer: [buffer, chunk]}

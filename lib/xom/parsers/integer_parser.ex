@@ -1,4 +1,4 @@
-defmodule Xom.Parsers.IntegerParser do
+defmodule Xom.IntegerParser do
 
   defstruct buffer: [], options: %{}
 
@@ -6,8 +6,8 @@ defmodule Xom.Parsers.IntegerParser do
 
 end
 
-defimpl Xom.Parsers.Parser, for: Xom.Parsers.IntegerParser do
-  alias Xom.Parsers.IntegerParser
+defimpl Xom.Parser, for: Xom.IntegerParser do
+  alias Xom.IntegerParser
 
   def update(%IntegerParser{buffer: buffer} = parser, chunk) do
     %{parser | buffer: [buffer, chunk]}

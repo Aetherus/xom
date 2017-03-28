@@ -1,4 +1,4 @@
-defmodule Xom.Parsers.TimestampParser do
+defmodule Xom.TimestampParser do
 
   defstruct buffer: [], options: %{}
 
@@ -6,8 +6,8 @@ defmodule Xom.Parsers.TimestampParser do
 
 end
 
-defimpl Xom.Parsers.Parser, for: Xom.Parsers.TimestampParser do
-  alias Xom.Parsers.TimestampParser
+defimpl Xom.Parser, for: Xom.TimestampParser do
+  alias Xom.TimestampParser
 
   def update(%TimestampParser{buffer: buffer} = parser, chunk) do
     %{parser | buffer: [buffer, chunk]}

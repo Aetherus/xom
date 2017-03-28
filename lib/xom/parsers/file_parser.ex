@@ -1,4 +1,4 @@
-defmodule Xom.Parsers.FileParser do
+defmodule Xom.FileParser do
   use GenServer
 
   defstruct pid: nil
@@ -28,8 +28,8 @@ defmodule Xom.Parsers.FileParser do
   end
 end
 
-defimpl Xom.Parsers.Parser, for: Xom.Parsers.FileParser do
-  alias Xom.Parsers.FileParser
+defimpl Xom.Parser, for: Xom.FileParser do
+  alias Xom.FileParser
 
   def update(%FileParser{pid: pid} = parser, chunk) do
     GenServer.cast(pid, {:update, chunk})
