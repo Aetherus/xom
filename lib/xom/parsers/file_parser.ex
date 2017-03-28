@@ -10,7 +10,7 @@ defmodule Xom.FileParser do
 
   ## GenServer callbacks ##
   def init(options) do
-    {:ok, tmp_path} = Temp.path("xom")
+    tmp_path = Plug.Upload.random_file!("xom")
     fd = File.open!(tmp_path, [:write, :binary])
     {:ok, %{fd: fd, path: tmp_path, options: options}}
   end

@@ -5,8 +5,21 @@ defimpl Xom.IOWrapper, for: Plug.Conn do
     GenServer.start_link(__MODULE__, %{conn: conn, done: false})
   end
 
+  def conn(pid) do
+    GenServer.call(pid, :conn)
+  end
+
+  def stop(pid) do
+    GenServer.stop(pid, :normal)
+  end
+
+  # GenServer callbacks
   def init(state) do
     {:ok, state}
+  end
+
+  def handle_call(:conn, _from, %{conn: conn} = state) do
+    {:reply, conn, state}
   end
 
   def handle_info({:io_request, from, reply_as, {:get_chars, _, chunk_size}}, %{conn: conn, done: false} = state) do
@@ -23,7 +36,6 @@ defimpl Xom.IOWrapper, for: Plug.Conn do
 
   def handle_info({:io_request, from, reply_as, {:get_chars, _, _}}, %{done: true} = state) do
     send(from, {:io_reply, reply_as, :eof})
-    GenServer.cast(self(), :close)
     {:noreply, state}
   end
 
@@ -36,7 +48,4 @@ defimpl Xom.IOWrapper, for: Plug.Conn do
     {:noreply, state}
   end
 
-  def handle_cast(:close, state) do
-    {:stop, :normal, state}
-  end
 end

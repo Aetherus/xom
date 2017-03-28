@@ -36,8 +36,6 @@ defmodule XomTest do
 
   test "parse file" do
     assert {:ok, %Plug.Upload{path: tmp_path, content_type: "image/jpeg", filename: "foo.jpg"}, _} = Xom.parse(@sample_file_node)
-    assert File.read!(@mock_file_path) == File.read!(tmp_path)
-    File.rm!(tmp_path)
   end
 
   test "parse list" do
@@ -72,6 +70,11 @@ defmodule XomTest do
     assert_parse_success(result)
   end
 
+  test "plug" do
+    conn = Plug.Test.conn(:post, "/", File.read!("test/fixtures/fixture.xml"))
+    assert {:ok, %{}, _conn} = Xom.Plug.Parser.parse(conn, "application", "vnd.xom+xml", nil, nil)
+  end
+
   def assert_parse_success(result) do
     assert %{
       "foo" => "foo",
@@ -91,6 +94,6 @@ defmodule XomTest do
         }
       ]
     } = result
-    [path1, path2, path3] |> Enum.each(fn path -> File.rm!(path) end)
   end
+
 end

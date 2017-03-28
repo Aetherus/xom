@@ -23,6 +23,7 @@ defmodule Xom do
         event_fun: &on_sax_event/3)
   end
 
+  # Helpers
   defp read_io(io) do
     chunk = case IO.binread(io, @chunk_size) do
       :eof -> []
