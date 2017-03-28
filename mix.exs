@@ -29,7 +29,6 @@ defmodule Xom.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:html_entities, "~> 0.3"},
       {:timex, "~> 3.1"},
       {:plug, "~> 1.3"}
     ]

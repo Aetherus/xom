@@ -26,7 +26,7 @@ defmodule XomTest do
   end
 
   test "parse string" do
-    assert {:ok, "这是bar！", _} = Xom.parse("<string>这是bar！</string>")
+    assert {:ok, "这是 foo & bar！", _} = Xom.parse("<string>这是 foo &amp; bar！</string>")
   end
 
   test "parse timestamp" do

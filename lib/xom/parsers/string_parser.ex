@@ -14,7 +14,7 @@ defimpl Xom.Parser, for: Xom.StringParser do
   end
 
   def parse(%StringParser{buffer: buffer, options: options}) do
-    result = buffer |> to_string() |> HtmlEntities.decode()
+    result = buffer |> to_string()
     {result, options}
   end
 end
