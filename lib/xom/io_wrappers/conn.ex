@@ -13,12 +13,12 @@ defimpl Xom.IOWrapper, for: Plug.Conn do
     state = case Plug.Conn.read_body(conn, length: chunk_size) do
       {:ok, data, conn} ->
         send(from, {:io_reply, reply_as, to_string(data)})
-        %{state | done: true}
+        %{conn: conn, done: true}
       {:more, data, conn} ->
         send(from, {:io_reply, reply_as, to_string(data)})
-        state
-      {:error, _} ->
-        send(from, {:io_reply, reply_as, :eof})
+        %{conn: conn, done: false}
+      {:error, _} = reply ->
+        send(from, {:io_reply, reply_as, reply})
         %{state | done: true}
     end
     {:noreply, state}
