@@ -21,9 +21,18 @@ defimpl Xom.IOWrapper, for: Plug.Conn do
     {:noreply, state}
   end
 
-  def handle_info({:io_request, from, reply_as, {:get_chars, _, _}}, %{conn: conn, done: true} = state) do
+  def handle_info({:io_request, from, reply_as, {:get_chars, _, _}}, %{done: true} = state) do
     send(from, {:io_reply, reply_as, :eof})
-    GenServer.cast(self, :close)
+    GenServer.cast(self(), :close)
+    {:noreply, state}
+  end
+
+  def handle_info({:io_request, from, reply_as, _}, state) do
+    send(from, {:io_reply, reply_as, {:error, :not_supported}})
+    {:noreply, state}
+  end
+
+  def handle_info(_, state) do
     {:noreply, state}
   end
 

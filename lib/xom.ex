@@ -25,7 +25,7 @@ defmodule Xom do
 
   defp read_io(io) do
     chunk = case IO.binread(io, @chunk_size) do
-      :eof -> ""
+      :eof -> []
       chunk -> chunk
     end
     {chunk, io}
