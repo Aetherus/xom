@@ -1,7 +1,7 @@
 defmodule Xom do
   alias Xom.{IOWrapper, ParseError, Parser, BooleanParser, FileParser, FloatParser, IntegerParser, ListParser, MapParser, StringParser, TimestampParser}
 
-  @chunk_size 1024  # bytes
+  @chunk_size 8_000_000  # bytes
 
   @parsers %{
     'boolean' => BooleanParser,
